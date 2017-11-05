@@ -51,16 +51,16 @@ void Tools::NormalizeRadians(double &r) {
 //    cout << "Radians out of range:" << r;
 //    throw std::exception();
 //  }
-  double dif = fmod(r + M_PI, 2*M_PI);
-  if (dif < 0)
-    dif += 2*M_PI;
-  r = dif - M_PI;
-//  while (r > M_PI) {
-//    r -= 2. * M_PI;
-//    cout << r << "\n";
-//  }
-//  while (r < -M_PI) {
-//    r += 2. * M_PI;
-//    cout << r << "\n";
-//  }
+//  double dif = fmod(r + M_PI, 2*M_PI);
+//  if (dif < 0)
+//    dif += 2*M_PI;
+//  r = dif - M_PI;
+  while (r > M_PI) {
+    r -= 2. * M_PI;
+    cout << r << "\n";
+  }
+  while (r < -M_PI) {
+    r += 2. * M_PI;
+    cout << r << "\n";
+  }
 }
