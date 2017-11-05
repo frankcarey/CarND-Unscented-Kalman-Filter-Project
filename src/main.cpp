@@ -139,13 +139,15 @@ int main()
           auto msg = "42[\"estimate_marker\"," + msgJson.dump() + "]";
           // std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-	  
+          std::cout << msg.data() << "\n";
         }
       } else {
         
         std::string msg = "42[\"manual\",{}]";
         ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
+        //std::cout << msg.data() << "\n";
       }
+
     }
 
   });
@@ -185,6 +187,8 @@ int main()
     return -1;
   }
   h.run();
+
+
 }
 
 
