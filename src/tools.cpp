@@ -46,21 +46,9 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 
 void Tools::NormalizeRadians(double &r) {
   // yaw angle normalization for angles that may be outside of +/- PI.
-
-//  if (r< -10 || r > 10) {
-//    cout << "Radians out of range:" << r;
-//    throw std::exception();
-//  }
-//  double dif = fmod(r + M_PI, 2*M_PI);
-//  if (dif < 0)
-//    dif += 2*M_PI;
-//  r = dif - M_PI;
-  while (r > M_PI) {
-    r -= 2. * M_PI;
-    cout << r << "\n";
+  double dif = fmod(r + M_PI, 2*M_PI);
+  if (dif < 0) {
+    dif += 2 * M_PI;
   }
-  while (r < -M_PI) {
-    r += 2. * M_PI;
-    cout << r << "\n";
-  }
+  r = dif - M_PI;
 }

@@ -24,18 +24,13 @@ UKF::UKF() {
 
   // initial covariance matrix
   P_ = MatrixXd(5, 5);
-  //::Identity(5, 5);
-  P_ <<   0.15,   0, 0, 0, 0,
-            0, 0.15, 0, 0, 0,
-            0,    0, 1, 0, 0,
-            0,    0, 0, 1, 0,
-            0,    0, 0, 0, 1;
+  P_ = MatrixXd::Identity(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 1.5;
+  std_a_ = 1.6;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 0.6;
+  std_yawdd_ = 0.9;
 
   // Laser measurement noise standard deviation position1 in m
   std_laspx_ = 0.15;
@@ -274,9 +269,9 @@ void UKF::Prediction(double delta_t) {
     x_ = x_ + weights_(i) * Xsig_pred_.col(i);
   }
   cout << "after x_: " << x_ << "\n\n";
+
   //predicted state covariance matrix
   //create covariance matrix for prediction
-  //MatrixXd P = MatrixXd(n_x_, n_x_);
   P_.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {
 
@@ -371,8 +366,8 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
     VectorXd x_diff = Xsig_pred_.col(i) - x_;
 
     // yaw angle normalization for angles that may be outside of +/- PI.
-    //Tools::NormalizeRadians(x_diff(3));
-    //Tools::NormalizeRadians(z_diff(1));
+    Tools::NormalizeRadians(x_diff(3));
+    Tools::NormalizeRadians(z_diff(1));
 
     // Covariance Matrix recovered from the predicted sigma points.
     Tc = Tc + weights_(i) * x_diff * z_diff.transpose();
@@ -410,9 +405,6 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 
   //set measurement dimension, radar can measure r, phi, and r_dot
   int n_z = 3;
-
-  //VectorXd z = VectorXd(n_z);
-  //z(0) = meas_package.raw_measurements_(0);
 
   //create matrix for sigma points in measurement space
   MatrixXd Zsig = MatrixXd(n_z, 2 * n_aug_ + 1);
